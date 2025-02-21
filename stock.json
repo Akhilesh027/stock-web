@@ -1,0 +1,26 @@
+[
+    {
+        "id": "apple",
+        "name": "Apple Inc.",
+        "price": "$150",
+        "description": "Apple Inc. designs, manufactures, and sells consumer electronics, software, and services.",
+        "trendData": [120, 135, 140, 150],
+        "video": "9fQwp4UHZHQ?si=AXRI-U3oITLNiOfR"
+    },
+    {
+        "id": "tesla",
+        "name": "Tesla Inc.",
+        "price": "700",
+        "description": "Tesla Inc. is an American electric vehicle and clean energy company.",
+        "trendData": [800, 750, 720, 700],
+        "video": "https://www.youtube.com/embed/sample2"
+    },
+    {
+        "id": "amazon",
+        "name": "Amazon Inc.",
+        "price": "3300",
+        "description": "Amazon Inc. is a multinational technology company focusing on e-commerce, cloud computing, and AI.",
+        "trendData": [3100, 3200, 3250, 3300],
+        "video": "https://www.youtube.com/embed/sample3"
+    }
+]

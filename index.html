@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Market Overview</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Stock Info</div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Stocks</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <input type="text" placeholder="Search stocks..." class="search-bar">
+    </header>
+    <div class="container">
+        <h1>Stock Market Overview</h1>
+        <div class="filters">
+            <select>
+                <option>Sort by Price</option>
+                <option>Sort by Performance</option>
+                <option>Sort by Date</option>
+            </select>
+            <select>
+                <option>Filter Profitable Stocks</option>
+                <option>Trending Stocks</option>
+            </select>
+        </div>
+        <div class="stock-grid" id="stock-grid">
+            <!-- Stocks will be dynamically loaded here -->
+        </div>
+    </div>
+    <script>
+        async function loadStocks() {
+            try {
+                const response = await fetch('stock.json');
+                const stocks = await response.json();
+                const stockGrid = document.getElementById("stock-grid");
+                
+                stockGrid.innerHTML = stocks.map(stock => `
+                    <div class="stock-card" onclick="navigateToDetails('${stock.id}')">
+                        <h2>${stock.name}</h2>
+                        <p class="price ${stock.change > 0 ? 'up' : 'down'}">$${stock.price}</p>
+                        <canvas class="small-chart"></canvas>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error("Error loading stocks:", error);
+            }
+        }
+        
+        function navigateToDetails(id) {
+            window.location.href = `detail.html?id=${id}`;
+        }
+
+        window.onload = loadStocks;
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Details</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html">Stock Info</a></div>
+    </header>
+    
+    <div class="container">
+        <h1 id="stock-name">Loading...</h1>
+        <p id="stock-price">Fetching price...</p>
+        <p id="stock-description">Fetching description...</p>
+
+        <div class="chart-container">
+            <canvas id="stock-chart"></canvas>
+        </div>
+        <div class="video-section">
+            <iframe id="stock-video" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+        </div>
+        
+
+        <button onclick="goBack()">Back to Stocks</button>
+    </div>
+
+    <script>
+        async function fetchStockDetails() {
+            try {
+                const response = await fetch('stock.json');
+                const stocks = await response.json();
+                
+                const params = new URLSearchParams(window.location.search);
+                const stockId = params.get("id");
+                const stockData = stocks.find(stock => stock.id === stockId);
+                
+                if (!stockData) {
+                    document.getElementById("stock-name").textContent = "Stock Not Found";
+                    return;
+                }
+                
+                document.getElementById("stock-name").textContent = stockData.name;
+                document.getElementById("stock-price").textContent = `Current Price: $${stockData.price}`;
+                document.getElementById("stock-description").textContent = stockData.description;
+                document.getElementById("stock-video").src = `https://www.youtube.com/embed/${stockData.videoId}`;
+
+                const ctx = document.getElementById("stock-chart").getContext("2d");
+                new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: ["Day 1", "Day 2", "Day 3", "Today"],
+                        datasets: [{
+                            label: `Price Trend`,
+                            data: stockData.trendData,
+                            borderColor: "#4caf50",
+                            backgroundColor: "rgba(76, 175, 80, 0.2)",
+                            borderWidth: 2,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            } catch (error) {
+                console.error("Error fetching stock data:", error);
+            }
+        }
+
+        function goBack() {
+            window.location.href = "index.html";
+        }
+
+        window.onload = fetchStockDetails;
+    </script>
+</body>
+</html>
